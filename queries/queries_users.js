@@ -1,5 +1,3 @@
-const express = require('express');
-const router = express.Router();
 
 function QueriesUsers(dbConnection) {
   
@@ -24,7 +22,7 @@ function QueriesUsers(dbConnection) {
         if (err) {
           reject(err)
         }
-        if (rows[0]) {
+        if (rows && rows[0]) {
           resolve(rows)
         }
         reject({error : "Error: no corresponding result"})

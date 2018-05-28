@@ -1,8 +1,10 @@
-const express = require('express');
-const router = express.Router();
 
 function QueriesUsersLogin(dbConnection) {
   
+  /**
+   * GET ALL
+   */
+
   this.getUsersLogin = () => {
     return new Promise((resolve, reject) => {
       dbConnection.query('SELECT * FROM users_login', (err, rows) => {
@@ -14,6 +16,26 @@ function QueriesUsersLogin(dbConnection) {
     })
   };
 
+
+  /**
+   * GET FROM
+   */
+
+  this.getAllLoginFromUsersLogin = () => {
+    return new Promise((resolve, reject) => {
+      dbConnection.query('SELECT login FROM users_login', (err, rows) => {
+        if (err) {
+          reject(err)
+        }
+        resolve(rows)
+      })
+    })
+  };
+
+  /**
+   * GET BY
+   */
+
   this.getUserLoginByIdUser = (idUser) => {
     return new Promise((resolve, reject) => {
       dbConnection.query('SELECT * FROM users_login WHERE id_user = ?', idUser, (err, rows) => {
@@ -21,7 +43,7 @@ function QueriesUsersLogin(dbConnection) {
           reject(err)
         }
         if (rows[0]) {
-          resolve(rows)
+          resolve(rows[0])
         }
         reject({error : "Error: no corresponding result"})
       })
@@ -35,7 +57,7 @@ function QueriesUsersLogin(dbConnection) {
           reject(err)
         }
         if (rows[0]) {
-          resolve(rows)
+          resolve(rows[0])
         }
         reject({error : "Error: no corresponding result"})
       })
@@ -50,7 +72,7 @@ function QueriesUsersLogin(dbConnection) {
           reject(err)
         }
         if (rows[0]) {
-          resolve(rows)
+          resolve(rows[0])
         }
         reject({error : "Error: no corresponding result"})
       })
@@ -61,7 +83,7 @@ function QueriesUsersLogin(dbConnection) {
    * INSERT INTO
    */
 
-  this.insertIntoUsers = (user_set) => {
+  this.insertIntoUsersLogin = (user_set) => {
     return new Promise((resolve, reject) => {
       dbConnection.query('INSERT INTO users_login set ? ', user_set, (err, rows) => {
         if (err) {
@@ -76,7 +98,7 @@ function QueriesUsersLogin(dbConnection) {
      * UPDATE
      */ 
 
-    this.updateUsersBySetId = (user_set, id) => {
+    this.updateUsersLoginBySetId = (user_set, id) => {
       return new Promise((resolve, reject) => {
         dbConnection.query('UPDATE users_login set ? WHERE id = ?', [user_set, id], (err, rows) => {
           if (err) {
@@ -91,9 +113,20 @@ function QueriesUsersLogin(dbConnection) {
      * DELETE
      */
 
-    this.deleteUserById = (id) => {
+    this.deleteUserLoginById = (id) => {
       return new Promise((resolve, reject) => {
         dbConnection.query('DELETE FROM users_login WHERE id = ?', id, (err, rows) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(rows)
+        })
+      })
+    };
+
+    this.deleteUserLoginByIdUser = (idUser) => {
+      return new Promise((resolve, reject) => {
+        dbConnection.query('DELETE FROM users_login WHERE id_user = ?', idUser, (err, rows) => {
           if (err) {
             reject(err);
           }

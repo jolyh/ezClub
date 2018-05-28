@@ -1,12 +1,12 @@
 /*  REQUIRE  */
-const express = require('express');
-const path = require('path');
+const express = require('express')
+const path = require('path')
 
-const bodyParser = require('body-parser');
+const bodyParser = require('body-parser')
 //const cookieParser = require('cookie-parser');
 
 /*  Database REQUIRE */
-const con = require('./config/database');
+const con = require('./config/database')
 
 /* Extra file option */
 const fs = require('fs');
@@ -15,7 +15,7 @@ const fs = require('fs');
 const multer = require('multer');
 const upload = multer({
   dest: 'public/files'
-})
+});
 
 /*  brute force protection, request limiter  */
 var rateLimit = require('express-rate-limit');
@@ -26,6 +26,7 @@ const nodemailer = require('nodemailer');
 /*  Routes REQUIRE  */
 const users = require('./routes/users')
 const login = require('./routes/login')
+const notes = require('./routes/notes')
 
 /*  Init app */
 const app = express();
@@ -38,9 +39,9 @@ app.use((req, res, next) => {
 
 /*  Middleware  */
 // parse application/json
-app.use(bodyParser.json());
+app.use(bodyParser.json())
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: false }))
 
 /*  brute force protection, request limiter  */
 app.enable('trust proxy'); // only if you're behind a reverse proxy (Heroku, Bluemix, AWS if you use an ELB, custom Nginx setup, etc)
@@ -57,8 +58,9 @@ app.use(limiter)
 app.use(express.static(path.join(__dirname, 'public')))
 
 /*  Route use */
-app.use('/users', users);
-app.use('/login', login);
+app.use('/users', users)
+app.use('/login', login)
+app.use('/notes', notes)
 
 app.get('/', (req,res) => {
   res.json({message : 'Welcome to the back-end'})
@@ -70,7 +72,7 @@ app.use(function(req, res, next) {
 });
 
 // set the port of our application
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 3000
 
 // Start server
 app.listen(port, () => {

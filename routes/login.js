@@ -5,7 +5,6 @@ const bcrypt = require('bcrypt');
 const requireQueriesUsers = require('../queries/queries_users')
 const requireQueriesUsersLogin = require('../queries/queries_users_login')
 
-
 // à désactiver
 router.get('/', (req, res) => {
 
@@ -20,29 +19,38 @@ router.get('/', (req, res) => {
     })
 });
 
-router.get('/:login/:pwd', (req, res) => {
+router.post('/', (req, res) => {
 
-  var login = req.params.login
-  var pwd = req.params.pwd
+  var login = req.body.login
+  var plainPassword = req.body.password
 
-  console.log("login " + login + " - password " + pwd)
-
-  var salt = bcrypt.genSaltSync(10);
-  var hashpass = bcrypt.hashSync(pwd, salt);
+  console.log("login " + login + " - password " + plainPassword)
 
   var queriesUsersLogin = new requireQueriesUsersLogin(req.con)
   var queriesUsers = new requireQueriesUsers(req.con)
 
-  queriesUsersLogin.getUserLoginByLoginAndPassword(login, hashpass)
+  var userId
+
+  queriesUsersLogin.getUserLoginByLogin(login)
     .then((userLogin) => {
-        return(queriesUsers.getUserById(result[0].id))
+      userId = userLogin.id_user
+      return bcrypt.compare(plainPassword, userLogin.password)
     })
-    .then((user) => {
-      res.json(user)
+    .then((result) => {
+      console.log("result du compare  " + result)
+      if (result == true) {
+        return queriesUsers.getUserById(userId)
+      } else {
+        res.json({err : "Error: password does not match"})
+      }
+    })
+    .then((userAuthenticated) => {
+      res.json(userAuthenticated)
     })
     .catch((err) => {
       res.json(err);
     })
 });
+
 
 module.exports = router;

@@ -6,7 +6,7 @@ var con = mysql.createConnection({
   host:     "localhost",
   user:     "root",
   password: "",
-  database: "bbd_test",
+  database: "bbd2",
 });
 
 // Check db connection

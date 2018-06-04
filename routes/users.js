@@ -7,13 +7,19 @@ const requireQueriesUsersLogin = require('../queries/queries_users_login')
 
 const requireLoginGenerator = require('../utils/login_generator')
 
+// Faire un check si le user à le droit de faire ça 
+
+
+
 router.get('/', (req, res) => {
 
   var queriesUsers = new requireQueriesUsers(req.con)
 
   queriesUsers.getUsers()
     .then((users) => {
-      res.json(users)
+      console.log("query on users/")
+      console.log(users)
+      res.send(users)
     })
     .catch((err) => {
       res.json(err);
@@ -42,7 +48,7 @@ router.get('/:id', (req, res) => {
 // body to create user -> firstname, lastname, job (optionel), email
 router.post('/add', (req, res) => {
 
-  req.body = JSON.parse(JSON.stringify(req.body))
+   var body = JSON.parse(JSON.stringify(req.body))
 
   var queriesUsers = new requireQueriesUsers(req.con)
   var queriesUsersLogin = new requireQueriesUsersLogin(req.con)
@@ -56,30 +62,34 @@ router.post('/add', (req, res) => {
     'password' : undefined,
     'email' : req.body.email
   }
-  var newUser 
 
-  queriesUsers.insertIntoUsers(req.body)
+  loginGenerator.generateUniqueLogin(req.body.firstname, req.body.lastname)
+    .then((loginGenerated) => {
+      newUserLogin.login = loginGenerated;
+      body.login = loginGenerated
+      console.log(body)
+      return queriesUsers.insertIntoUsers(body)
+    })
     .then((userCreated) => {
-      newUser = userCreated
       newUserLogin.id_user = userCreated.insertId
-      console.log(newUserLogin)
+      console.log(userCreated)
       return bcrypt.hash(plainNewPassword, 10)
     })
     .then((hashPassword) => {
       console.log("plain " + plainNewPassword + " - " + hashPassword)
       newUserLogin.password = hashPassword
-      return loginGenerator.generateUniqueLogin(req.body.firstname, req.body.lastname)
-    })
-    .then((loginGenerated) => {
-      newUserLogin.login = loginGenerated
       return queriesUsersLogin.insertIntoUsersLogin(newUserLogin)
-    })
+    }) 
     .then((userLoginCreated) => {
-      res.json(newUser)
+      return queriesUsers.getUserById(newUserLogin.id_user)
+    })
+    .then((user) => {
+        res.json(user)
     })
     .catch((err) => {
       res.json(err)
     });
+    
 })
 
 /**

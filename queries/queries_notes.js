@@ -7,7 +7,7 @@ function QueriesNotes(dbConnection) {
 
   this.getNotes = () => {
     return new Promise((resolve, reject) => {
-      dbConnection.query('SELECT * FROM notes', (err, rows) => {
+      dbConnection.query('SELECT * FROM notes ORDER BY id DESC', (err, rows) => {
         if (err) {
           reject(err)
         }
@@ -22,7 +22,7 @@ function QueriesNotes(dbConnection) {
   
   this.getNotesById = (id) => {
     return new Promise((resolve, reject) => {
-      dbConnection.query('SELECT * FROM notes WHERE id = ?', id, (err, rows) => {
+      dbConnection.query('SELECT * FROM notes WHERE id = ? ORDER BY id DESC', id, (err, rows) => {
         if (err) {
           reject(err)
         }
@@ -38,9 +38,9 @@ function QueriesNotes(dbConnection) {
    * GET BY IDTYPE
    */
 
-  this.getNotesByIdType = (id_type) => {
+  this.getNotesByIdType = (idType) => {
     return new Promise((resolve, reject) => {
-      dbConnection.query('SELECT * FROM notes WHERE id_type = ?', id_type, (err, rows) => {
+      dbConnection.query('SELECT * FROM notes WHERE id_type = ? ORDER BY id DESC', idType, (err, rows) => {
         if (err) {
           reject(err)
         }
@@ -55,7 +55,7 @@ function QueriesNotes(dbConnection) {
 
   this.getNotesByCreator = (creator) => {
     return new Promise((resolve, reject) => {
-      dbConnection.query('SELECT * FROM notes WHERE creator_name = ?', creator, (err, rows) => {
+      dbConnection.query('SELECT * FROM notes WHERE creator_name = ? ORDER BY id DESC', creator, (err, rows) => {
         if (err) {
           reject(err)
         }
@@ -68,9 +68,9 @@ function QueriesNotes(dbConnection) {
    * INSERT INTO
    */
 
-  this.insertIntoNotes = (note_set) => {
+  this.insertIntoNotes = (noteSet) => {
     return new Promise((resolve, reject) => {
-      dbConnection.query('INSERT INTO notes set ? ', note_set, (err, rows) => {
+      dbConnection.query('INSERT INTO notes set ? ', noteSet, (err, rows) => {
         if (err) {
           reject(err)
         }
@@ -83,9 +83,9 @@ function QueriesNotes(dbConnection) {
    * UPDATE
    */ 
 
-  this.updateNotesBySetId = (note_set, id) => {
+  this.updateNotesBySetId = (noteSet, id) => {
     return new Promise((resolve, reject) => {
-      dbConnection.query('UPDATE notes set ? WHERE id = ?', [note_set, id], (err, rows) => {
+      dbConnection.query('UPDATE notes set ? WHERE id = ?', [noteSet, id], (err, rows) => {
         if (err) {
           reject(err)
         }

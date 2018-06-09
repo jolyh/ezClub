@@ -7,7 +7,7 @@ function QueriesUsersLogin(dbConnection) {
 
   this.getUsersLogin = () => {
     return new Promise((resolve, reject) => {
-      dbConnection.query('SELECT * FROM users_login', (err, rows) => {
+      dbConnection.query('SELECT * FROM users_login ORDER BY id DESC', (err, rows) => {
         if (err) {
           reject(err)
         }
@@ -42,7 +42,7 @@ function QueriesUsersLogin(dbConnection) {
         if (err) {
           reject(err)
         }
-        if (rows[0]) {
+        if (rows != undefined && rows[0]) {
           resolve(rows[0])
         }
         reject({error : "Error: no corresponding result"})
@@ -56,7 +56,7 @@ function QueriesUsersLogin(dbConnection) {
         if (err) {
           reject(err)
         }
-        if (rows[0]) {
+        if (rows != undefined && rows[0]) {
           resolve(rows[0])
         }
         reject({error : "Error: no corresponding result"})
@@ -71,7 +71,7 @@ function QueriesUsersLogin(dbConnection) {
         if (err) {
           reject(err)
         }
-        if (rows[0]) {
+        if (rows != undefined && rows[0]) {
           resolve(rows[0])
         }
         reject({error : "Error: no corresponding result"})

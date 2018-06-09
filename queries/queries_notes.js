@@ -20,9 +20,22 @@ function QueriesNotes(dbConnection) {
    * GET BY ID
    */
   
-  this.getNotesById = (id) => {
+  this.getNoteById = (id) => {
     return new Promise((resolve, reject) => {
       dbConnection.query('SELECT * FROM notes WHERE id = ? ORDER BY id DESC', id, (err, rows) => {
+        if (err) {
+          reject(err)
+        }
+        else if (rows[0]) {
+          resolve(rows)
+        }
+        reject({error : "Error: no corresponding result"})
+      })
+    })
+  };
+  this.getNoteByIdAndIdUser = (id, id_user) => {
+    return new Promise((resolve, reject) => {
+      dbConnection.query('SELECT * FROM notes WHERE id = ? AND id_user = ? ORDER BY id DESC', [id, id_user], (err, rows) => {
         if (err) {
           reject(err)
         }

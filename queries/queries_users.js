@@ -22,7 +22,7 @@ function QueriesUsers(dbConnection) {
         if (err) {
           reject(err)
         }
-        if (rows[0]) {
+        if (rows != undefined && rows[0]) {
           resolve(rows)
         }
         reject({error : "Error: no corresponding result"})
@@ -40,7 +40,7 @@ function QueriesUsers(dbConnection) {
         if (err) {
           reject(err)
         }
-        if (rows[0]) {
+        if (rows != undefined && rows[0]) {
           resolve(rows)
         }
         reject({error : "Error: no corresponding result"})
@@ -62,7 +62,7 @@ function QueriesUsers(dbConnection) {
         if (err) {
           reject(err)
         }
-        if (rows[0]) {
+        if (rows != undefined && rows[0]) {
           resolve(rows)
         }
         reject({error : "Error: no corresponding result"})
@@ -76,7 +76,7 @@ function QueriesUsers(dbConnection) {
         if (err) {
           reject(err)
         }
-        if (rows[0]) {
+        if (rows != undefined && rows[0]) {
           resolve(rows)
         }
         reject({error : "Error: no corresponding result"})
@@ -101,7 +101,7 @@ function QueriesUsers(dbConnection) {
         if (err) {
           reject(err)
         }
-        if (rows[0]) {
+        if (rows != undefined && rows[0]) {
           resolve(rows)
         }
         reject({error : "Error: no corresponding result"})

@@ -41,24 +41,6 @@ router.get('/:id', (req, res) => {
 
 });
 
-// test, à suppr
-
-router.get('/userslogin/all', (req, res) => {
-
-  var queriesUsersLogin = new requireQueriesUsersLogin(req.con)
-
-  queriesUsersLogin.getUsersLogin()
-    .then((users) => {
-      console.log("query on userslogin/")
-      console.log(users)
-      res.send(users)
-    })
-    .catch((err) => {
-      res.json(err);
-    })
-
-});
-
 /**
  * ADD USER
  */

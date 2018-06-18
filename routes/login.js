@@ -24,8 +24,6 @@ router.post('/', (req, res) => {
   var login = req.body.login
   var plainPassword = req.body.password
 
-  console.log("login " + login + " - password " + plainPassword)
-
   var queriesUsersLogin = new requireQueriesUsersLogin(req.con)
   var queriesUsers = new requireQueriesUsers(req.con)
 
@@ -37,7 +35,6 @@ router.post('/', (req, res) => {
       return bcrypt.compare(plainPassword, userLogin.password)
     })
     .then((result) => {
-      console.log("result du compare  " + result)
       if (result == true) {
         return queriesUsers.getUserById(userId)
       } else {

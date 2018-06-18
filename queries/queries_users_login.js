@@ -7,7 +7,7 @@ function QueriesUsersLogin(dbConnection) {
 
   this.getUsersLogin = () => {
     return new Promise((resolve, reject) => {
-      dbConnection.query('SELECT * FROM users_login ORDER BY id DESC', (err, rows) => {
+      dbConnection.query('SELECT * FROM users_login ORDER BY id_user DESC', (err, rows) => {
         if (err) {
           reject(err)
         }

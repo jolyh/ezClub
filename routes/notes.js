@@ -64,6 +64,7 @@ router.get('/type/:idtype', (req, res) => {
 router.post('/add', (req, res) => {
 
   var body = JSON.parse(JSON.stringify(req.body))
+  body.comments_number = 0
 
   var queriesUsers = new requireQueriesUsers(req.con)
   var queriesNotes = new requireQueriesNotes(req.con)
@@ -73,7 +74,7 @@ router.post('/add', (req, res) => {
       console.log(user[0])
       body.creator_name = user[0].lastname + ' ' + user[0].firstname
       console.log(body)
-      return queriesNotes.insertIntoNotes(req.body)
+      return queriesNotes.insertIntoNotes(body)
     })
     .then((result) => {
       res.json(result)
@@ -166,7 +167,7 @@ router.get('/extended/:id', (req, res) => {
  */
 
 // body to create note -> idUser, idType, content
-router.post('/extended/add', (req, res) => {
+router.post('/extended/:id/add', (req, res) => {
 
   var body = JSON.parse(JSON.stringify(req.body))
 
@@ -175,15 +176,24 @@ router.post('/extended/add', (req, res) => {
   var queriesNotesComments = new requireQueriesNotesComments(req.con)
 
   var newComment = {
-    id_note: body.id_note,
+    id_note: req.params.id,
     creator_name: body.creator_name,
     content: body.content
   }
-
-  queriesUsers.getUserByIdAndAuthorization(body.id_user, body.id_type)
+  var noteUpdated
+  
+  queriesNotes.getNoteById(req.params.id)
+    .then((note) => {
+      noteUpdated = note[0]
+      return queriesUsers.getUserByIdAndAuthorization(body.id_user, noteUpdated.id_type)
+    })
     .then((user) => {
       body.creator_name = user[0].lastname + ' ' + user[0].firstname
       return queriesNotesComments.insertIntoNotesComments(newComment)
+    })
+    .then((result) => {
+      noteUpdated.comments_number++;
+      return queriesNotes.updateNotesBySetId(noteUpdated, noteUpdated.id)
     })
     .then((result) => {
       res.json(result)
@@ -194,7 +204,7 @@ router.post('/extended/add', (req, res) => {
 });
 
 /**
- * EDIT NOTE
+ * EDIT NOTE COMMENT
  */
 router.post('/extended/edit/', (req, res) => {
 

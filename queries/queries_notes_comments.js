@@ -7,7 +7,7 @@ function QueriesNotesComments(dbConnection) {
 
   this.getNotesComments = () => {
     return new Promise((resolve, reject) => {
-      dbConnection.query('SELECT * FROM notes_comments', (err, rows) => {
+      dbConnection.query('SELECT * FROM notes_comments ORDER BY id DESC', (err, rows) => {
         if (err) {
           reject(err)
         }
@@ -36,7 +36,7 @@ function QueriesNotesComments(dbConnection) {
   
   this.getNotesCommentsByIdNote = (idNote) => {
     return new Promise((resolve, reject) => {
-      dbConnection.query('SELECT * FROM notes_comments WHERE id_note = ?', idNote, (err, rows) => {
+      dbConnection.query('SELECT * FROM notes_comments WHERE id_note = ? ORDER BY id DESC', idNote, (err, rows) => {
         if (err) {
           reject(err)
         }
@@ -50,7 +50,7 @@ function QueriesNotesComments(dbConnection) {
 
   this.getNotesCommentsByIdNoteAndIdUser = (idNote, idUser) => {
     return new Promise((resolve, reject) => {
-      dbConnection.query('SELECT * FROM notes_comments WHERE id_note = ? AND id_user = ?', [idNote, idUser], (err, rows) => {
+      dbConnection.query('SELECT * FROM notes_comments WHERE id_note = ? AND id_user = ? ORDER BY id DESC', [idNote, idUser], (err, rows) => {
         if (err) {
           reject(err)
         }

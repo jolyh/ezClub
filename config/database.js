@@ -2,6 +2,7 @@
 // DB connection setup
 const mysql = require('mysql');
 
+// localhost
 var con = mysql.createConnection({
   host:     "localhost",
   user:     "root",
@@ -9,6 +10,15 @@ var con = mysql.createConnection({
   database: "bbd2",
 });
 
+/*
+var con = mysql.createConnection({
+  host:     "db4free.net",
+  port:     "3306",
+  user:     "bbdapp",
+  password: "f.*dIL8d",
+  database: "bbdapp",
+});
+*/
 // Check db connection
 
 con.connect((err) => {

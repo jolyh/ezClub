@@ -1,6 +1,6 @@
 
 function QueriesNotes(dbConnection) {
-  
+
   /**
    * GET ALL
    */
@@ -26,7 +26,7 @@ function QueriesNotes(dbConnection) {
         if (err) {
           reject(err)
         }
-        else if (rows[0]) {
+        else if (rows != undefined && rows[0]) {
           resolve(rows)
         }
         reject({error : "Error: no corresponding result"})
@@ -39,7 +39,7 @@ function QueriesNotes(dbConnection) {
         if (err) {
           reject(err)
         }
-        else if (rows[0]) {
+        else if (rows != undefined && rows[0]) {
           resolve(rows)
         }
         reject({error : "Error: no corresponding result"})
